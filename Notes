@@ -1,0 +1,79 @@
+
+Tips
+----
+- If you are having to use sudo constantly with docker commands then run "sudo chmod 666 /var/run/docker.sock" in terminal.
+- If you are having permission error (relating to sockers) while rcreating image then change the Dockerfile Permissions.
+- You can use container/image ID in commands where there name is required.
+
+Concepts
+--------
+- Containers are a running instance of image. An image can have multiple containers.
+- If we make any change in container files or system then before the container is stopped, it must be commited and the image
+  (from which container was generated) should be updated. If the changes are not commited before the container is stopped
+  then they will be automatically terminated and nothing will be found in the image which instantiated the container.
+- Whenever we instantiate a container, the image used the build Dockerfile to check any CMD commands which are eventually run
+  in the new container. Changing the Dockerfile outside image doesn't affect the build image. If you need to change the
+  container start points, then change the Dockerfile and again build the image.
+
+
+Commands
+--------
+* Note: we use -f flag in commands where we need to forcely remove or stop a container/image. Its because in case where
+        an image is associated with a container (image being the parent of child container), the image will not be removed
+        using simple remove or stop commnads. Nevertheless, its side effects are still unknown.
+* FYI: -q commands return the container/image ID unlike a complete array of information. This list of IDs can be used to
+        remove or stop multiple container/images.
+
+
+To Build Image:
+    - docker build -t {myimage} app/
+
+To Instantiate Container:
+    - docker run {containerName}
+
+To Instantiate Container & enter in it:
+
+To enter into a running container:
+    - docker exec -ti {containerName} bash
+
+To commit changes in a running container or containerFiles:
+    - docker commit {containerName} {newImageName}
+
+To view all the containers:
+    - docker ps -a
+
+To view the running containers:
+    - docker ps
+
+To stop a container:
+    - docker stop {containerName}
+
+To remove a container:
+    - docker rm -f {containerName}
+
+To remove all stopped containers:
+    - docker container prune
+
+To remove all stopped && unused containers (not associated with another container/image):
+    - docker container prune --all
+
+To remove dangling (None) container:
+    - docker rmi $(docker images -f "dangling=true" -q)
+
+To remove all the containers (stopped or running):
+    - docker rm $(docker ps --all -q)
+
+To view all the images:
+    - docker images
+
+To remove image:
+    - docker rmi -f {imageName}
+
+To remove all dangling && unused images (not associated with another container/image) :
+    - docker container prune --all
+
+
+
+
+
+
